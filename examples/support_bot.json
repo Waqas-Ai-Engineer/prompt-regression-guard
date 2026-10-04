@@ -1,0 +1,18 @@
+{
+  "name": "Support bot prompt",
+  "prompt": "You are a support agent. Answer briefly and politely. Customer: {{input}}",
+  "mock_replies": {
+    "refund": "Sure - refunds are processed within 5 business days. Anything else I can help with?",
+    "password": "Use the 'Forgot password' link on the login page and follow the emailed steps.",
+    "cancel": "Done. Your subscription is cancelled. Let us know if there is anything else."
+  },
+  "cases": [
+    {"id": "refund-policy", "vars": {"input": "How long does a refund take?"},
+     "assertions": [{"type": "contains", "value": "5 business days"}, {"type": "max_words", "value": 40},
+                    {"type": "similar_to_baseline", "value": 0.8}]},
+    {"id": "password-reset", "vars": {"input": "I forgot my password"},
+     "assertions": [{"type": "contains", "value": "forgot password"}, {"type": "not_contains", "value": "I cannot"}]},
+    {"id": "cancel-upsell", "vars": {"input": "Please cancel my plan"},
+     "assertions": [{"type": "contains", "value": "cancel"}, {"type": "regex", "value": "anything else|let us know|sorry"}]}
+  ]
+}
